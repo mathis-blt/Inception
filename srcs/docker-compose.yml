@@ -1,0 +1,24 @@
+
+services:
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+
+    env_file:
+      - .env
+
+    ports:
+      - "3306:3306"
+
+    networks:
+      - inception_network
+    
+    # 5. Optionnel pour l'instant, mais obligatoire pour éviter de perdre tes données
+    # volumes:
+    #   - mariadb_data:/var/lib/mysql
+
+networks:
+  inception_network:
+    driver: bridge

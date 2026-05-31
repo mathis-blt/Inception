@@ -2,7 +2,7 @@
 set -e
 
 mkdir -p /run/mysqld
-chown -y mysql:mysql /run/mysqld
+chown mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
 # 2. Vérifier si la base de données existe déjà (évite de réinitialiser au redémarrage de la VM)
