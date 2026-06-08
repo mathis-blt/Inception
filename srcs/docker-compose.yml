@@ -1,29 +1,48 @@
 
 services:
   mariadb:
+    container_name: mariadb
+    image: srcs-mariadb
     build:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
-    container_name: mariadb
     networks:
       - inception_network
-    # volumes:
-    #   - mariadb_data:/var/lib/mysql
+    volumes:
+      - mariadb_data:/var/lib/mysql
     env_file:
       - .env
     restart: always
 
   wordpress:
+    container_name: wordpress
+    image: srcs-wordpress
     build:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
-    container_name: wordpress
     depends_on:
       - mariadb
     networks:
       - inception_network
-    # volumes:
-    #   - .env
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    env_file:
+      - .env
+    restart: always
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    networks:
+      - inception_network
+    volumes:
+      - wordpress_data:/var/www/wordpress
     restart: always
 
 networks:
@@ -31,17 +50,19 @@ networks:
     driver: bridge
 
 # if my vm crash, remember to create mariadb and worpress database folder (mkdir -p /home/maballet/data/mariadb or wordpress)
-  # volumes:
-  #   mariadb_data:
-  #     driver: local
-  #     driver_opts:
-  #       type: 'none'
-  #       o: 'bind'
-  #       device: '/home/maballet/data/mariadb'
+volumes:
+  mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/maballet/data/mariadb'
 
-  #   wordpress_data:
-  #     driver: local
-  #     driver_opts:
-  #       type: 'none'
-  #       o: 'bind'
-  #       device: '/home/maballet/data/wordpress'
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/maballet/data/wordpress'

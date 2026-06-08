@@ -1,16 +1,25 @@
-FROM debian:13.0
+FROM debian:bookworm
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     php-fpm \
     php-mysql \
-    curl \
+    wget \
     mariadb-client
 
-# COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+# upload WP-CLI
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+# have executable file in binary system
+RUN chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
 # conf fig installing wordpress
-# COPY ./tools/wp-conf.sh /usr/local/bin/wp-conf.sh
-# RUN chmod +x /usr/local/bin/wp-conf.sh
+COPY ./requirements/wordpress/conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+
+COPY ./requirements/wordpress/tools/wp-conf.sh /usr/local/bin/wp-conf.sh
+RUN chmod +x /usr/local/bin/wp-conf.sh
+
+# going in the website folder
+WORKDIR /var/www/html
 
 EXPOSE 9000
 
