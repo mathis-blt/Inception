@@ -5,9 +5,9 @@ DATA_DIR = /home/maballet/data
 
 
 #------- colors -------#
-GREEN = \033[0;32m
-BLUE  = \033[0;34m
-STD = \033[0m
+GREEN = \033[0;32m]
+BLUE  = \033[0;34m]
+STD = \033[0m]
 #----------------------#
 
 
@@ -35,6 +35,10 @@ fclean: down
 	@sudo rm -rf $(DATA_DIR)/mariadb
 	@sudo rm -rf $(DATA_DIR)/wordpress
 	@echo "$(GREEN)Tout a été réinitialisé !$(STD)"
+
+bonus:
+# 	@ls ../data_save/wordpress/wp-content/uploads/2026/06
+	@sudo cp -r ../custom ../data/wordpress/wp-content/uploads/2026/
 
 re: fclean all
 
