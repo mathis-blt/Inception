@@ -2,7 +2,7 @@
 
 ---
 
-## 📝 Description
+## Description
 
 **Inception** is a system administration project aimed at deepening knowledge about virtualization and containerization. The main goal is to build a complete, secure, and isolated infrastructure composed of multiple Docker containers, all running under a specific network. 
 
@@ -10,7 +10,7 @@ Every service (NGINX, WordPress, MariaDB) runs inside its own dedicated containe
 
 ---
 
-## 🔬 Technical Choices & Conceptual Comparisons
+## Technical Choices & Conceptual Comparisons
 
 ### Virtual Machines vs Docker
 *   **Virtual Machines (VMs)**: Hypervisors emulate entire hardware systems. Each VM runs its own full guest operating system, including its own kernel. This provides strong isolation but consumes massive amounts of RAM, CPU, and storage space, leading to slow boot times (like the VirtualBox environment running this project).
@@ -30,7 +30,7 @@ Every service (NGINX, WordPress, MariaDB) runs inside its own dedicated containe
 
 ---
 
-## 🚀 Instructions
+## Instructions
 
 ### Prerequisites
 Make sure your system has `docker` and `docker-compose` installed.
@@ -51,7 +51,7 @@ Add `127.0.0.1 maballet.42.fr` to your local `/etc/hosts` file.
 
 ---
 
-## 📚 Resources & AI Use Description
+## Resources & AI Use Description
 
 ### Documentation & References
 *	[Overall guide for this project](https://medium.com/@ssterdev/inception-guide-42-project-part-i-7e3af15eb671)
@@ -64,3 +64,4 @@ Add `127.0.0.1 maballet.42.fr` to your local `/etc/hosts` file.
 In accordance with academic integrity guidelines, AI assistance was integrated into this project for the following specific tasks:
 1.  **Debugging Permissions**: AI was used to resolve complex `403 Forbidden` errors related to Linux ownership mapping (`chown`/`chmod`) between the host file system and the NGINX user inside the Docker container.
 2.  **Concept Clarification**: Used to quickly compare core architectural paradigms such as Bind Mounts vs Docker Volumes during the research phase.
+3.  **project architecture**: In order to have a global overview of the structure and clear guideline begin with.
