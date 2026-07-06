@@ -22,8 +22,6 @@ RUN chmod +x /usr/local/bin/wp-conf.sh
 # going in the website folder
 WORKDIR /var/www/html
 
-EXPOSE 9000
-
 RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
 
 RUN chown -R www-data:www-data /var/www/html

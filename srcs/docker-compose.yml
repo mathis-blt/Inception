@@ -2,7 +2,7 @@
 services:
   mariadb:
     container_name: mariadb
-    image: srcs-mariadb
+    image: mariadb
     build:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
@@ -12,16 +12,23 @@ services:
       - mariadb_data:/var/lib/mysql
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     restart: always
 
   wordpress:
     container_name: wordpress
-    image: srcs-wordpress
+    image: wordpress
     build:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - inception_network
     volumes:
@@ -32,6 +39,7 @@ services:
 
   nginx:
     container_name: nginx
+    image: nginx
     build:
       context: .
       dockerfile: requirements/nginx/Dockerfile

@@ -10,6 +10,4 @@ COPY ./requirements/mariadb/tools/mdb-conf.sh /usr/local/bin/mdb-conf.sh
 
 RUN chmod +x /usr/local/bin/mdb-conf.sh
 
-EXPOSE 3306
-
 ENTRYPOINT ["/usr/local/bin/mdb-conf.sh"]
