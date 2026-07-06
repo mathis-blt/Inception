@@ -7,10 +7,14 @@ cd /var/www/wordpress
 # creating php-fpm folder
 mkdir -p /run/php
 
+while ! mariadb-admin ping -h"mariadb" --silent; do
+    sleep 2
+done
+
 echo "checking WordPress files..."
 
 # check if wordpress already installed
-if [ ! -f "wp-config.php" ]; then
+	if [ ! -f "wp-config.php" ]; then
 
     echo "WordPress not installed. Downloading..."
     # Docker need root power since he exec in root by default
@@ -19,29 +23,33 @@ if [ ! -f "wp-config.php" ]; then
     echo "Creating wp-config.php file..."
     # using .env environment variables
     wp config create --allow-root \
-        --dbname="${SQL_DATABASE}" \
-        --dbuser="${SQL_USER}" \
-        --dbpass="${SQL_PASSWORD}" \
-        --dbhost="mariadb:3306"
+		--dbname="${SQL_DATABASE}" \
+		--dbuser="${SQL_USER}" \
+		--dbpass="${SQL_PASSWORD}" \
+		--dbhost="mariadb:3306"
+
+	if [ ! -f "index.php" ]; then
+		wp core download --allow-root --force
+	fi
 
     echo "WordPress installation..."
     # website and admin set up 
     wp core install --allow-root \
-        --url="${WP_URL}" \
-        --title="${WP_TITLE}" \
-        --admin_user="${WP_ADMIN_USER}" \
-        --admin_password="${WP_ADMIN_PASSWORD}" \
-        --admin_email="${WP_ADMIN_EMAIL}"
+		--url="${WP_URL}" \
+		--title="${WP_TITLE}" \
+		--admin_user="${WP_ADMIN_USER}" \
+		--admin_password="${WP_ADMIN_PASSWORD}" \
+		--admin_email="${WP_ADMIN_EMAIL}"
 
     echo "secondary user creation..."
     wp user create "${WP_USER}" "${WP_USER_EMAIL}" \
-        --role=author \
-        --user_pass="${WP_USER_PASSWORD}" \
-        --allow-root
+		--role=author \
+		--user_pass="${WP_USER_PASSWORD}" \
+		--allow-root
 
-    echo "WordPress successfully installed !"
+	echo "WordPress successfully installed !"
 else
-    echo "WordPress already installed."
+	echo "WordPress already installed."
 fi
 
 echo "launching PHP-FPM 8.2..."
