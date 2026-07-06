@@ -5,9 +5,9 @@ DATA_DIR = /home/maballet/data
 ENV_FILE= srcs/.env
 
 #------- colors -------#
-GREEN = \033[0;32m]
-BLUE  = \033[0;34m]
-STD = \033[0m]
+GREEN = \033[0;32m
+BLUE  = \033[0;34m
+STD = \033[0m
 #----------------------#
 
 
@@ -17,14 +17,14 @@ all: $(ENV_FILE) setup
 	@echo "$(GREEN)Inception est opérationnel ! https://maballet.42.fr$(STD)"
 
 $(ENV_FILE):
-	echo -e "${BLUE}Le fichier $(ENV_FILE) est absent. Création...${STD}\n"
-	touch $(ENV_FILE)
-	echo "SQL_DATABASE=wordpress" >> $(ENV_FILE);\
+	@echo "${BLUE}Le fichier $(ENV_FILE) est absent. Création...${STD}\n"
+	@touch $(ENV_FILE)
+	@echo "SQL_DATABASE=wordpress" >> $(ENV_FILE);\
 	echo "SQL_USER=maballet" >> $(ENV_FILE);\
-	read -p "🔑 Saisir le mot de passe utilisateur MariaDB (SQL_PASSWORD) : " sql_pass;\
+	read -p "Saisir le mot de passe utilisateur MariaDB (SQL_PASSWORD) : " sql_pass;\
 	echo "" # Saut de ligne après la saisie masquée;\
 	echo "SQL_PASSWORD=$$sql_pass" >> $(ENV_FILE);\
-	read -p "🔑 Saisir le mot de passe ROOT MariaDB (SQL_ROOT_PASSWORD) : " sql_root_pass;\
+	read -p "Saisir le mot de passe ROOT MariaDB (SQL_ROOT_PASSWORD) : " sql_root_pass;\
 	echo "";\
 	echo "SQL_ROOT_PASSWORD=$$sql_root_pass" >> $(ENV_FILE);\
 	echo "" >> $(ENV_FILE);\
@@ -32,16 +32,16 @@ $(ENV_FILE):
 	echo "WP_URL=maballet.42.fr" >> $(ENV_FILE);\
 	echo "WP_ADMIN_USER=admin_maballet" >> $(ENV_FILE);\
 	echo "WP_ADMIN_EMAIL=maballet@student.42.fr" >> $(ENV_FILE);\
-	read -p "👑 Saisir le mot de passe ADMIN WordPress (WP_ADMIN_PASSWORD) : " wp_admin_pass;\
+	read -p "Saisir le mot de passe ADMIN WordPress (WP_ADMIN_PASSWORD) : " wp_admin_pass;\
 	echo "";\
 	echo "WP_ADMIN_PASSWORD=$$wp_admin_pass" >> $(ENV_FILE);\
 	echo "" >> $(ENV_FILE);\
 	echo "WP_USER=touriste" >> $(ENV_FILE);\
 	echo "WP_USER_EMAIL=touriste@gmail.com" >> $(ENV_FILE);\
-	read -p "👤 Saisir le mot de passe USER secondaire (WP_USER_PASSWORD) : " wp_user_pass;\
+	read -p "Saisir le mot de passe USER secondaire (WP_USER_PASSWORD) : " wp_user_pass;\
 	echo "";\
 	echo "WP_USER_PASSWORD=$$wp_user_pass" >> $(ENV_FILE);\
-	echo -e "\n${GREEN}✅ Fichier $(ENV_FILE) généré avec succès !${STD}";
+	echo "${GREEN}Fichier $(ENV_FILE) généré avec succès !${STD}\n";
 
 setup:
 	@echo "$(BLUE)Vérification et création des dossiers de volumes...$(STD)"
