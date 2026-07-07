@@ -7,10 +7,6 @@ cd /var/www/wordpress
 # creating php-fpm folder
 mkdir -p /run/php
 
-# while ! mariadb-admin ping -h"mariadb" --silent; do
-#     sleep 2
-# done
-
 echo "checking WordPress files..."
 
 # check if wordpress already installed

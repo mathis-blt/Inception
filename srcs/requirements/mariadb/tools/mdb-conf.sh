@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 
 DATA_DIR="/var/lib/mysql"

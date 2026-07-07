@@ -13,7 +13,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--silent"]
+      test: ["CMD", "mariadb-admin", "ping", "-u", "${SQL_USER}", "-p${SQL_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 5
