@@ -7,14 +7,29 @@ cd /var/www/wordpress
 # creating php-fpm folder
 mkdir -p /run/php
 
+echo "Waiting for MariaDB..."
+
+while ! php -r '$mx = @fsockopen("mariadb", 3306); if ($mx) { fclose($mx); exit(0); } else { exit(1); }'; do
+    sleep 2
+done
+
+echo "MariaDB ready and up for connections !"
+
 echo "checking WordPress files..."
 
+if [ ! -f "index.php" ]; then
+	echo "WordPress files missing. Downloading..."
+	wp core download --allow-root --force
+else
+	echo "WordPress files already present."
+fi
+
 # check if wordpress already installed
-	if [ ! -f "wp-config.php" ]; then
+if [ ! -f "wp-config.php" ]; then
 
     echo "WordPress not installed. Downloading..."
-    # Docker need root power since he exec in root by default
-    wp core download --allow-root
+    # # Docker need root power since he exec in root by default
+    # wp core download --allow-root
 
     echo "Creating wp-config.php file..."
     # using .env environment variables
@@ -23,10 +38,6 @@ echo "checking WordPress files..."
 		--dbuser="${SQL_USER}" \
 		--dbpass="${SQL_PASSWORD}" \
 		--dbhost="mariadb:3306"
-
-	if [ ! -f "index.php" ]; then
-		wp core download --allow-root --force
-	fi
 
     echo "WordPress installation..."
     # website and admin set up 

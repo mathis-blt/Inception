@@ -6,22 +6,23 @@ DATA_DIR="/var/lib/mysql"
 # if there is no database yet
 if [ ! -d "$DATA_DIR/${SQL_DATABASE}" ]; then
 
-    echo "Base de données '${SQL_DATABASE}' introuvable. Initialisation..."
+    echo "data base '${SQL_DATABASE}' missing. Initialisation..."
     
     # initialise system folders if empty
     if [ ! -d "$DATA_DIR/mysql" ]; then
         mysql_install_db --user=mysql --datadir=$DATA_DIR
     fi
-    
-    echo "Démarrage temporaire de MariaDB..."
+
+    echo "temporary launch of MariaDB..."
     mariadbd-safe --skip-networking &
-    
+    PID=$!
+
     # wait for the server to respond
-    until mariadb-admin ping &>/dev/null; do
+    until mariadb-admin ping > /dev/null 2>&1; do
         sleep 1
     done
 
-    echo "Création automatique de la BDD et de l'utilisateur..."
+    echo "BDD and user automatic creation..."
     
     # temporary file of SQL comands
     cat << EOF > /tmp/init.sql
@@ -36,12 +37,12 @@ EOF
     mariadb -u root < /tmp/init.sql 2>/dev/null || mariadb -u root -p"${SQL_ROOT_PASSWORD}" < /tmp/init.sql 2>/dev/null || true
     rm -f /tmp/init.sql
 
-    echo "Arrêt de l'instance temporaire..."
+    echo "temporary instance down..."
     mariadb-admin -u root -p"${SQL_ROOT_PASSWORD}" shutdown 2>/dev/null || mariadb-admin -u root shutdown 2>/dev/null || true
-    sleep 1
+    wait $PID
 else
-    echo "La base de données '${SQL_DATABASE}' existe déjà. Configuration ignorée."
+    echo "data base '${SQL_DATABASE}' already exist. Configuration ignored."
 fi
 
-echo "Démarrage normal de MariaDB au premier plan..."
+echo "Normal launch of mariadb at first plan..."
 exec mariadbd --user=mysql --datadir=$DATA_DIR
