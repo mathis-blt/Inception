@@ -5,7 +5,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     php-mysql \
 	php-gd \
     wget \
-    mariadb-client
+    mariadb-client \
+	&& apt-get clean
 
 # upload WP-CLI
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
