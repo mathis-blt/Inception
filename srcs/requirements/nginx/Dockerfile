@@ -21,7 +21,5 @@ COPY ./requirements/nginx/conf/nginx.conf /etc/nginx/conf.d/default.conf
 RUN mkdir -p /var/www/wordpress
 RUN chown -R www-data:www-data /var/www/wordpress
 
-EXPOSE 443
-
 # front launch of NGINX
 CMD ["nginx", "-g", "daemon off;"]
